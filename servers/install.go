@@ -9,17 +9,14 @@ import (
 	ansibler "github.com/apenella/go-ansible"
 )
 
-func Setup(server model.MCServer)  {
+func Test(server model.MCServer)  {
 	ansiblePlaybookConnectionOptions := &ansibler.AnsiblePlaybookConnectionOptions{
 		Connection: "local",
 	}
 	ansiblePlaybookOptions := &ansibler.AnsiblePlaybookOptions{
 		Inventory: "127.0.0.1,",
 	}
-	privilegeEscalationOptions := &ansibler.AnsiblePlaybookPrivilegeEscalationOptions{
-		Become:        true,
-		BecomeMethod:  "sudo",
-	}
+	privilegeEscalationOptions := &ansibler.AnsiblePlaybookPrivilegeEscalationOptions{}
 
 	playbookFile, err := GeneratePlaybookFile()
 	if err != nil {
@@ -27,6 +24,7 @@ func Setup(server model.MCServer)  {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
+	fmt.Println("running playbook", playbookFile)
 	playbook := &ansibler.AnsiblePlaybookCmd{
 		Playbook:          playbookFile,
 		ConnectionOptions: ansiblePlaybookConnectionOptions,
@@ -46,7 +44,7 @@ func GeneratePlaybookFile() (path string, err error) {
 	if err != nil {
 		return
 	}
-	ioutil.WriteFile(f.Name(), []byte(`---
+	err = ioutil.WriteFile(f.Name(), []byte(`---
 - name: This is a hello-world example
   hosts: all
   tasks:
@@ -55,6 +53,9 @@ func GeneratePlaybookFile() (path string, err error) {
         content: hello worldn
         dest: /tmp/testfile.txt
 `), os.ModePerm)
+	if err != nil {
+		return
+	}
 	path = f.Name()
 	return
 }
