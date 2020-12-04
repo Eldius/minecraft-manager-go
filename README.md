@@ -6,3 +6,4 @@
 
 [ansible-go](https://github.com/apenella/go-ansible)
 [gobuffalo/packr](https://github.com/gobuffalo/packr)
+[Mojang Versions API](https://launchermeta.mojang.com/mc/game/version_manifest.json)
