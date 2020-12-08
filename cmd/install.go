@@ -38,7 +38,10 @@ minecraft-manager-go install \
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 		server.Host = args[0]
-		servers.Install(server)
+		err := servers.Install(server)
+		if err != nil {
+			fmt.Println("Failed to install server\n---\n", err.Error(), "\n---")
+		}
 	},
 }
 
