@@ -29,15 +29,30 @@ import (
 // installCmd represents the install command
 var installCmd = &cobra.Command{
 	Use:   "install",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "Install MC to a designated server",
+	Long: `Install MC to a designated server.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+minecraft-manager-go install \
+	-n <server-name> \
+	-u <remote-server-user> \
+	-k <ssh-key-path> \
+	-p <ssh-port> \
+	-c <connection-type> \
+	<server-host-or-ip>
+
+
+For example:
+
+minecraft-manager-go install \
+		-n mineserver001 \
+		-u ssh_user \
+		-k ~/.ssh/id_ed25519 \
+		-p 22 \
+		-c ssh \
+		127.0.0.1
+`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("install called")
+		server.Host = args[0]
 		servers.Install(server)
 	},
 }
@@ -46,19 +61,12 @@ var server *model.MCServer
 
 func init() {
 	rootCmd.AddCommand(installCmd)
-	server = &model.MCServer{
-		Name:              "",
-		Host:              "",
-		User:              "",
-		PrivateKeyPath:    "",
-		PrivateKeyContent: "",
-		ConnectionType:    model.SSHConnType,
-		ConnectionPort:    "22",
-	}
+	server = &model.MCServer{}
 	installCmd.Flags().StringVarP(&server.Name, "name", "n", fmt.Sprintf("mineserver-%s", uuid.New().String()), "Server name '-n <server-name>'")
 	installCmd.Flags().StringVarP(&server.User, "user", "u", "", "SSH username '-u <username>'")
 	installCmd.Flags().StringVarP(&server.PrivateKeyPath, "private-key", "k", "~/.ssh/id_ed25519", "SSH Private key '-pk ~/.ssh/id_ed25519'")
 	installCmd.Flags().StringVarP(&server.ConnectionPort, "port", "p", "22", "SSH port '-p 22'")
+	installCmd.Flags().StringToStringVar(&server.ExtraVars, "var", map[string]string{}, "--var minecraft_service_user=mineuser --var minecraft_max_memory=1024m --var minecraft_min_memory=2g")
 
 	var connType string
 	installCmd.Flags().StringVarP(&connType, "connection-type", "c", "local", "Connection type '-c (SSH|LOCAL)'")

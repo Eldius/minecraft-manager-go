@@ -24,4 +24,5 @@ type MCServer struct {
 	ConnectionType    ConnectionTypeEnum
 	ConnectionPort    string
 	Playbook          string
+	ExtraVars         map[string]string
 }
