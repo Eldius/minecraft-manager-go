@@ -1,9 +1,27 @@
 package model
 
+/*
+ConnectionTypeEnum represents a connection type
+*/
+type ConnectionTypeEnum int
+
+const (
+	// SSHConnType represents an SSH connection
+	SSHConnType = iota
+	// LOCALConType represents a local connection
+	LOCALConType
+)
+
+/*
+MCServer represents an MC server
+*/
 type MCServer struct {
-	Name string
-	Host string
-	PrivateKeyPath string
+	Name              string
+	Host              string
+	User              string
+	PrivateKeyPath    string
 	PrivateKeyContent string
-	ConnectionType string
+	ConnectionType    ConnectionTypeEnum
+	ConnectionPort    string
+	Playbook          string
 }

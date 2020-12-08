@@ -9,7 +9,17 @@ import (
 	ansibler "github.com/apenella/go-ansible"
 )
 
-func Test(server model.MCServer)  {
+/*
+Install installs MC on a new MC server
+*/
+func Install(server *model.MCServer) error {
+	return nil
+}
+
+/*
+Test just a test method...
+*/
+func Test(server model.MCServer) {
 	ansiblePlaybookConnectionOptions := &ansibler.AnsiblePlaybookConnectionOptions{
 		Connection: "local",
 	}
@@ -18,7 +28,7 @@ func Test(server model.MCServer)  {
 	}
 	privilegeEscalationOptions := &ansibler.AnsiblePlaybookPrivilegeEscalationOptions{}
 
-	playbookFile, err := GeneratePlaybookFile()
+	playbookFile, err := GenerateTestPlaybookFile()
 	if err != nil {
 		fmt.Println("Failed to generate playbook")
 		fmt.Println(err.Error())
@@ -26,11 +36,11 @@ func Test(server model.MCServer)  {
 	}
 	fmt.Println("running playbook", playbookFile)
 	playbook := &ansibler.AnsiblePlaybookCmd{
-		Playbook:          playbookFile,
-		ConnectionOptions: ansiblePlaybookConnectionOptions,
-		Options:           ansiblePlaybookOptions,
+		Playbook:                   playbookFile,
+		ConnectionOptions:          ansiblePlaybookConnectionOptions,
+		Options:                    ansiblePlaybookOptions,
 		PrivilegeEscalationOptions: privilegeEscalationOptions,
-		ExecPrefix:        "Go-ansible example",
+		ExecPrefix:                 "Go-ansible example",
 	}
 
 	err = playbook.Run()
@@ -39,7 +49,10 @@ func Test(server model.MCServer)  {
 	}
 }
 
-func GeneratePlaybookFile() (path string, err error) {
+/*
+GenerateTestPlaybookFile generates a test Ansible playbook
+*/
+func GenerateTestPlaybookFile() (path string, err error) {
 	f, err := ioutil.TempFile("", "")
 	if err != nil {
 		return
