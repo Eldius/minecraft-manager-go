@@ -54,6 +54,7 @@ func SetDefaults() {
 		"minemanager.ansible.role.git-url",
 		"https://github.com/Eldius/minecraft-java-edition-ansible-role.git",
 	)
+	viper.SetDefault("minemanager.mojang.versions-url", "https://launchermeta.mojang.com/mc/game/version_manifest.json")
 }
 
 /*

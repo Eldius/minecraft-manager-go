@@ -18,21 +18,24 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/Eldius/minecraft-manager-go/versions"
 	"github.com/spf13/cobra"
 )
 
 // versionsCmd represents the versions command
 var versionsCmd = &cobra.Command{
 	Use:   "versions",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "List available versions",
+	Long:  `List available versions.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("versions called")
+		if vers, err := versions.GetVersions(); err != nil {
+			fmt.Println("Failed to list available versions")
+		} else {
+			fmt.Printf("## available versions: (%d)\n", len(vers))
+			for _, v := range vers {
+				fmt.Printf("  - %s from (%s)\n", v.ID, v.ReleaseTime)
+			}
+		}
 	},
 }
 

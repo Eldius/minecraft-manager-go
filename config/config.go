@@ -33,3 +33,10 @@ fetch the Ansible installation role
 func GetAnsibleRoleGitURL() string {
 	return viper.GetString("minemanager.ansible.role.git-url")
 }
+
+/*
+GetMojangVersionsURL returns the URL to fetch versions
+*/
+func GetMojangVersionsURL() string {
+	return viper.GetString("minemanager.mojang.versions-url")
+}
